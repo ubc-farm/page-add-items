@@ -1,5 +1,4 @@
 node_modules
-server/out.js
-server/out.js.map
+server/*
 public/index.js
 public/index.js.map
