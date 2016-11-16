@@ -1,2 +1,5 @@
 node_modules
-dist
+server/out.js
+server/out.js.map
+public/index.js
+public/index.js.map
