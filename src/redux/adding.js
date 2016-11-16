@@ -3,7 +3,6 @@ const CLOSE = 'inventory/adding/CLOSE';
 const TOGGLE = 'inventory/adding/TOGGLE';
 
 export default function addingReducer(state = false, action = {}) {
-	console.log(state, action.type);
 	switch (action.type) {
 		case OPEN: return true;
 		case CLOSE: return false;

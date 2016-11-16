@@ -6,7 +6,7 @@ import replace from 'rollup-plugin-replace';
 export default {
 	sourceMap: true,
 	entry: 'src/index.jsx',
-	dest: 'dist/index.js',
+	dest: 'server/public/index.js',
 	format: 'iife',
 	plugins: [
 		babel({ exclude: 'node_modules/**' }),

@@ -1,10 +1,14 @@
 import json from 'rollup-plugin-json';
+import babel from 'rollup-plugin-babel';
 
 export default {
 	sourceMap: true,
-	entry: 'src/server/index.js',
-	dest: 'dist/server.js',
+	entry: 'server/src/index.js',
+	dest: 'server/out.js',
 	format: 'cjs',
-	plugins: [json()],
+	plugins: [
+		json(),
+		babel(),
+	],
 	external: ['joi', 'babyparse'],
 };
