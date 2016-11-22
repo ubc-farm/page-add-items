@@ -38,8 +38,8 @@ const updateItems = list => Promise.all(list.map(
 ));
 
 const syncInventory = {
-	method: ['PUT', 'PATCH'],
-	path: '/inventory',
+	method: ['POST', 'PUT', 'PATCH'],
+	path: '/inventory/sync',
 	async handler({ payload: input }, reply) {
 		try {
 			const clientList = input.map(i => i.id);
