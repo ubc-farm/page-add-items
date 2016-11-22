@@ -1,4 +1,4 @@
-import { difference, isEqual } from 'lodash';
+import { differenceBy, intersectionBy, isEqual } from 'lodash';
 import * as Joi from 'joi';
 import { wrap } from 'boom';
 import inputToRow from './../../src/table/inputToRow.js';
@@ -23,15 +23,25 @@ const payload = Joi.array().items(Joi.object().keys({
 	sku: Joi.string().allow(null),
 }));
 
+const getId = item => item.id;
+
+function inputToDataRow(item) {
+	const dataRow = inputToRow(item);
+	dataRow.id = item.id;
+	return dataRow;
+}
+
 const addNewItems = list => Promise.all(list.map(
-	item => knex('inventory').insert(inputToRow(item)),
+	item => knex('inventory').insert(inputToDataRow(item)),
 ));
 
-const removeOldItems = ids => knex('inventory').whereIn('id', [...ids]).delete();
+const removeOldItems = ids => knex('inventory')
+	.whereIn('id', ids.map(getId))
+	.delete();
 
 const updateItems = list => Promise.all(list.map(
 	async (item) => {
-		const newItem = inputToRow(item);
+		const newItem = inputToDataRow(item);
 		const oldItem = await knex('inventory').where('id', item.id).first();
 		if (!isEqual(newItem, oldItem)) await knex('inventory').update(newItem);
 	},
@@ -42,26 +52,16 @@ const syncInventory = {
 	path: '/inventory/sync',
 	async handler({ payload: input }, reply) {
 		try {
-			const clientList = input.map(i => i.id);
-			const idList = (await knex('inventory').select('id')).map(i => i.id);
+			const idList = await knex('inventory').select('id');
 
-			const added = new Set(difference(clientList, idList));
-			const removed = new Set(difference(idList, clientList));
-			const modified = new Set(
-				idList.filter(id => !added.has(id) && !removed.has(id)),
-			);
-
-			const toAdd = [];
-			const toModify = [];
-			input.forEach((i) => {
-				if (added.has(i.id)) toAdd.push(i);
-				else if (modified.has(i.id)) toModify.push(i);
-			});
+			const added = differenceBy(input, idList, getId);
+			const removed = differenceBy(idList, input, getId);
+			const modified = intersectionBy(idList, input, getId);
 
 			await Promise.all([
-				addNewItems(toAdd),
+				addNewItems(added),
 				removeOldItems(removed),
-				updateItems(toModify),
+				updateItems(modified),
 			]);
 		} catch (err) {
 			return reply(wrap(err));
