@@ -1,9 +1,11 @@
+import { difference, isEqual } from 'lodash';
 import * as Joi from 'joi';
 import { wrap } from 'boom';
-import inputToRow from '../../../src/table/inputToRow.js';
-import knex from '../knexinit.js';
+import inputToRow from './../../src/table/inputToRow.js';
+import knex from './knexinit.js';
 
-const payload = Joi.array().single().items(Joi.object().keys({
+const payload = Joi.array().items(Joi.object().keys({
+	id: Joi.string(),
 	class: Joi.any().only('Variable', 'Fixed'),
 	product: Joi.string(),
 	description: Joi.string(),
@@ -21,51 +23,41 @@ const payload = Joi.array().single().items(Joi.object().keys({
 	sku: Joi.string().allow(null),
 }));
 
-const getInventory = {
-	method: 'GET',
-	path: '/inventory/{id?}',
-	async handler({ params: { id } }, reply) {
-		try {
-			const inventoryList = id
-				? await knex('inventory').where('id', id).first()
-				: await knex('inventory').select();
+const addNewItems = list => Promise.all(list.map(
+	item => knex('inventory').insert(inputToRow(item)),
+));
 
-			return reply(inventoryList).type('application/json');
-		} catch (err) {
-			return reply(wrap(err));
-		}
+const removeOldItems = ids => knex('inventory').whereIn('id', [...ids]).delete();
+
+const updateItems = list => Promise.all(list.map(
+	async (item) => {
+		const newItem = inputToRow(item);
+		const oldItem = await knex('inventory').where('id', item.id).first();
+		if (!isEqual(newItem, oldItem)) await knex('inventory').update(newItem);
 	},
-	config: { response: { payload } },
-};
+));
 
-const addInventory = {
-	method: 'POST',
-	path: '/inventory',
-	async handler({ payload: input }, reply) {
-		try {
-			const newRow = inputToRow(input);
-			Reflect.deleteProperty(newRow, 'id');
-
-			return reply(knex('inventory').insert(newRow, 'id'));
-		} catch (err) {
-			return reply(wrap(err));
-		}
-	},
-	config: {
-		response: { payload: Joi.string() },
-		validate: { payload },
-	},
-};
-
-const setInventory = {
+const syncInventory = {
 	method: ['PUT', 'PATCH'],
 	path: '/inventory',
 	async handler({ payload: input }, reply) {
 		try {
-			const replacementRow = inputToRow(input);
-			replacementRow.id = input.id;
+			const clientList = input.map(i => i.id);
+			const idList = (await knex('inventory').select('id')).map(i => i.id);
 
-			return reply(knex('inventory').update(replacementRow, 'id'));
+			const added = new Set(difference(clientList, idList));
+			const removed = new Set(difference(idList, clientList));
+			const modified = new Set(
+				idList.filter(id => !added.has(id) && !removed.has(id)),
+			);
+
+			await Promise.all([
+				addNewItems(input.filter(i => added.has(i.id))),
+				removeOldItems(removed),
+				updateItems(input.filter(i => modified.has(i.id))),
+			]);
+
+			return reply().code(204);
 		} catch (err) {
 			return reply(wrap(err));
 		}
@@ -76,4 +68,4 @@ const setInventory = {
 	},
 };
 
-export default [getInventory, addInventory, setInventory];
+export default [syncInventory];
