@@ -51,16 +51,23 @@ const syncInventory = {
 				idList.filter(id => !added.has(id) && !removed.has(id)),
 			);
 
-			await Promise.all([
-				addNewItems(input.filter(i => added.has(i.id))),
-				removeOldItems(removed),
-				updateItems(input.filter(i => modified.has(i.id))),
-			]);
+			const toAdd = [];
+			const toModify = [];
+			input.forEach((i) => {
+				if (added.has(i.id)) toAdd.push(i);
+				else if (modified.has(i.id)) toModify.push(i);
+			});
 
-			return reply().code(204);
+			await Promise.all([
+				addNewItems(toAdd),
+				removeOldItems(removed),
+				updateItems(toModify),
+			]);
 		} catch (err) {
 			return reply(wrap(err));
 		}
+
+		return reply().code(204);
 	},
 	config: {
 		response: { payload: Joi.string() },
