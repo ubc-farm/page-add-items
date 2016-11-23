@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { wrap } from 'boom';
 import inputToRow from '../../../src/table/inputToRow.js';
-import knex from '../knexinit.js';
+import knex from '../connection.js';
 
 const payload = Joi.array().single().items(Joi.object().keys({
 	class: Joi.any().only('Variable', 'Fixed'),
@@ -21,7 +21,7 @@ const payload = Joi.array().single().items(Joi.object().keys({
 	sku: Joi.string().allow(null),
 }));
 
-const getInventory = {
+export const getInventory = {
 	method: 'GET',
 	path: '/inventory/{id?}',
 	async handler({ params: { id } }, reply) {
@@ -38,7 +38,7 @@ const getInventory = {
 	config: { response: { payload } },
 };
 
-const addInventory = {
+export const addInventory = {
 	method: 'POST',
 	path: '/inventory',
 	async handler({ payload: input }, reply) {
@@ -57,7 +57,7 @@ const addInventory = {
 	},
 };
 
-const setInventory = {
+export const setInventory = {
 	method: ['PUT', 'PATCH'],
 	path: '/inventory',
 	async handler({ payload: input }, reply) {
@@ -75,5 +75,3 @@ const setInventory = {
 		validate: { payload },
 	},
 };
-
-export default [getInventory, addInventory, setInventory];

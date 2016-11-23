@@ -1,8 +1,8 @@
 import { differenceBy, intersectionBy, isEqual } from 'lodash';
 import * as Joi from 'joi';
 import { wrap } from 'boom';
-import inputToRow from './../../src/table/inputToRow.js';
-import knex from './knexinit.js';
+import inputToRow from '../../../src/table/inputToRow.js';
+import knex from '../connection.js';
 
 const payload = Joi.array().items(Joi.object().keys({
 	id: Joi.string(),

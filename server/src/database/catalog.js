@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import knex from '../knexinit.js';
+import knex from '../connection.js';
 
 const columns = [
 	'class', 'product',
@@ -28,7 +28,7 @@ const response = {
 	})),
 };
 
-const getCatalog = {
+export const getCatalog = {
 	method: 'GET',
 	path: '/catalog/{name?}',
 	handler({ params: { name } }, reply) {
@@ -46,7 +46,7 @@ const getCatalog = {
 	config: { response },
 };
 
-const searchCatalog = {
+export const searchCatalog = {
 	method: 'POST',
 	path: '/catalog',
 	handler({ payload: name }, reply) {
@@ -58,5 +58,3 @@ const searchCatalog = {
 		validate: { payload: Joi.string() },
 	},
 };
-
-export default [getCatalog, searchCatalog];
