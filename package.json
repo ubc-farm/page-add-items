@@ -30,12 +30,9 @@
   "devDependencies": {
     "@types/joi": "^9.0.32",
     "@types/redux-thunk": "^2.1.31",
+    "@ubc-farm/babel-preset": "^1.0.0",
     "@ubc-farm/eslint-config": "^4.1.0",
     "@ubc-farm/server": "^2.4.0",
-    "babel-plugin-external-helpers": "^6.8.0",
-    "babel-preset-es2016": "^6.16.0",
-    "babel-preset-es2017": "^6.16.0",
-    "babel-preset-react": "^6.16.0",
     "eslint": "^3.9.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
