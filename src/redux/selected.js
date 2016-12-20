@@ -1,21 +1,21 @@
-const TOGGLE = 'inventory/selected/TOGGLE';
+const SET = 'inventory/selected/SET';
 
+// Reducer
 export default function selectedReducer(state = null, action = {}) {
 	switch (action.type) {
-		case TOGGLE:
-			return action.payload === state ? null : action.payload;
+		case SET:	return action.payload === state
+			? null
+			: action.payload;
 
 		default: return state;
 	}
 }
 
 
-/** @returns {Set} selected rpw IDs */
+// Selectors
 export const getSelected = store => store.selected;
-/** @returns {boolean} is the row selected */
 export const isSelected = (store, id) => getSelected(store) === id;
-/** @returns {boolean} is any row selected */
-export const anySelected = store => getSelected(store) !== null;
+export const anythingSelected = store => getSelected(store) !== null;
 
-
-export const toggle = row => ({ type: TOGGLE, payload: row });
+// Actions
+export const setSelected = row => ({ type: SET, payload: row });
