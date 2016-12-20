@@ -1,8 +1,36 @@
+import moment from 'moment';
 import { snakeCase } from 'lodash';
+import { id as uniqueId } from '@ubc-farm/utils';
+import { floatToCents } from '@ubc-farm/money';
 
-function uniqueID() {
-	return Math.random().toString(36).substring(7);
+const clearEquipmentOnlyKeys = Object.freeze({
+	quantity: undefined,
+	unit: undefined,
+	entryDate: undefined,
+	location: undefined,
+});
+
+function transformInputToRow(input) {
+	const {
+		valuePerUnit,
+		entryDate,
+		lifeSpan,
+		salvageValue,
+	} = input;
+
+	return Object.assign({ _id: uniqueId('') }, input, {
+		class: input.class || 'Variable',
+		valuePerUnit: valuePerUnit
+			? floatToCents(parseFloat(valuePerUnit))
+			: valuePerUnit,
+		salvageValue: salvageValue
+			? floatToCents(parseFloat(salvageValue))
+			: salvageValue,
+		entryDate: entryDate ? moment(entryDate).format('DD/M/YY') : entryDate,
+		lifeSpan: lifeSpan ? moment.duration(lifeSpan).toJSON() : lifeSpan,
+	});
 }
+
 
 export const INSERT_EQUIPMENT = 'inventory/equipmentDB/INSERT_ITEM';
 const SAVE_NEW_ITEM = 'inventory/equipmentDB/SAVE_NEW_ITEM';
@@ -17,7 +45,7 @@ const DELETE_SELECTED_EQUIPMENT = 'inventory/equipmentDB/DELETE_SELECTED_EQUIPME
 export default function equipmentDB(state = [], action = {}, selectedId = '') {
 	switch (action.type) {
 		case SAVE_NEW_ITEM: return [
-			Object.assign({ _id: uniqueID() }, action.payload),
+			Object.assign(transformInputToRow(action.payload), clearEquipmentOnlyKeys),
 			...state,
 		];
 
@@ -27,16 +55,11 @@ export default function equipmentDB(state = [], action = {}, selectedId = '') {
 				? state.find(equip => equip.product === productName)
 				: undefined;
 			if (productBase) {
-				productBase = Object.assign({}, productBase, {
-					quantity: undefined,
-					unit: undefined,
-					entryDate: undefined,
-					location: undefined,
-				});
+				productBase = Object.assign({}, productBase, clearEquipmentOnlyKeys);
 			}
 
 			return [
-				Object.assign({ _id: uniqueID() }, productBase, action.payload),
+				Object.assign({}, productBase, transformInputToRow(action.payload)),
 				...state,
 			];
 		}
