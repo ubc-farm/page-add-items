@@ -5,10 +5,13 @@ const duration = Joi.string().regex(
 	'ISO 8601 Duration',
 );
 
+const id = Joi.string().regex(/^item\/[^\/]+\/\w+$/, 'Item docURI ID');
+
 /**
  * Represents a type of item in the catalog
  */
 export default Joi.object({
+	_id: id,
 	class: Joi.any().only('Variable', 'Fixed'),
 	product: Joi.string(),
 	description: Joi.string(),

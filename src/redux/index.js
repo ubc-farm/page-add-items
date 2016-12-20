@@ -5,7 +5,9 @@ import selected from './selected.js';
 import equipmentDB, {
 	INSERT_EQUIPMENT, deleteEquipment, editEquipment,
 } from './equipmentDB.js';
+import metadata from './metadata.js';
 
+// Custom merged reducer to pass states to other reducers
 function mergedReducer(state = {}, action) {
 	let hasChanged = false;
 	const nextState = {};
@@ -19,6 +21,11 @@ function mergedReducer(state = {}, action) {
 	const nextDatabase = equipmentDB(lastDatabase, action, nextSelected);
 	nextState.equipmentDB = nextDatabase;
 	hasChanged = hasChanged || nextDatabase !== lastDatabase;
+
+	const lastMeta = state.metadata;
+	const nextMeta = metadata(lastMeta, action, nextDatabase);
+	nextState.metadata = nextMeta;
+	hasChanged = hasChanged || nextMeta !== lastMeta;
 
 	return hasChanged ? nextState : state;
 }
