@@ -1,31 +1,36 @@
-/** @jsx createElement */
-import { createElement, PropTypes } from 'react';
+import { createElement, PropTypes } from 'react'; /** @jsx createElement */
 import { connect } from 'react-redux';
-import { deleteSelected, getTable } from '../redux/table.js';
-import { anySelected } from '../redux/selected.js';
+import { bindActionCreators } from 'redux';
+import { deleteSelectedEquipment } from '../redux/equipmentDB.js';
+import { anythingSelected } from '../redux/selected.js';
 import { startAdding } from '../redux/adding.js';
 import exportCSV from './exportCSV.js';
 
-const Toolbar = props => (
+const Toolbar = ({ addAction, delAction, exportAction, anythingSelected }) => (
 	<header className="inventory-Toolbar">
-		<button
-			onClick={props.add}
-		>
+		<button onClick={addAction}>
 			Add Inventory Item
 		</button>
 		<button
-			onClick={props.delete}
-			disabled={!props.anySelected}
+			onClick={delAction}
+			disabled={!anythingSelected}
 		>
 			Delete Item
 		</button>
 		<button
-			onClick={props.export}
+			onClick={exportAction}
 		>
 			Export CSV
 		</button>
 	</header>
 );
+
+Toolbar.propTypes = {
+	addAction: PropTypes.func,
+	delAction: PropTypes.func,
+	exportAction: PropTypes.func,
+	anythingSelected: PropTypes.bool,
+};
 
 function exportAction() {
 	return (dispatch, getState) => exportCSV(getTable(getState()));
@@ -33,11 +38,11 @@ function exportAction() {
 
 export default connect(
 	state => ({
-		anySelected: anySelected(state),
+		anySelected: anythingSelected(state),
 	}),
-	dispatch => ({
-		delete: () => dispatch(deleteSelected()),
-		add: () => dispatch(startAdding()),
-		export: () => dispatch(exportAction()),
-	}),
+	dispatch => bindActionCreators({
+		addAction: startAdding,
+		delAction: deleteSelectedEquipment,
+		exportAction: exportAction,
+	}, dispatch),
 )(Toolbar);
