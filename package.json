@@ -1,13 +1,12 @@
 {
   "name": "@ubc-farm/page-add-items",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Form for adding items to inventory catalog",
   "author": "Tiger Oakes <tigeroakes@gmail.com> (http://tigeroakes.com)",
   "license": "MIT",
   "repository": "https://github.com/ubc-farm/page-add-items",
   "browser": "public/index.js",
   "main": "api.js",
-  "module": "src/index.jsx",
   "ubc-farm": {
     "server-plugin": "api.js"
   },
@@ -36,7 +35,7 @@
   },
   "devDependencies": {
     "@ubc-farm/babel-preset": "^1.0.0",
-    "@ubc-farm/eslint-config": "^4.1.0",
+    "@ubc-farm/eslint-config": "^4.2.0",
     "@ubc-farm/server": "^2.4.0",
     "eslint": "^3.9.1",
     "eslint-plugin-import": "^2.2.0",
@@ -57,8 +56,9 @@
     "lint": "eslint src/**"
   },
   "files": [
-    "server/public",
-    "server/out"
+    "api.js",
+    "api.js.map",
+    "public"
   ],
   "config": {
     "port": 3001
