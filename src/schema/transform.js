@@ -20,7 +20,7 @@ export default function transformInputToRow(input) {
 	} = input;
 
 	return Object.assign(
-		{ _id: itemAsset({ id: id(), product: snakeCase(input.product) }) },
+		{ _id: itemAsset({ id: id(''), product: snakeCase(input.product) }) },
 		input,
 		{
 			class: input.class || 'Variable',

@@ -6,20 +6,18 @@ import { anythingSelected } from '../redux/selected.js';
 import { openEditor, download } from '../redux/metadata.js';
 import exportCSV from './exportCSV.js';
 
-const Toolbar = ({ addAction, delAction, exportAction, anythingSelected }) => (
+const Toolbar = ({ addAction, delAction, exportAction, anySelected }) => (
 	<header className="inventory-Toolbar">
 		<button onClick={addAction}>
 			Add Inventory Item
 		</button>
 		<button
 			onClick={delAction}
-			disabled={!anythingSelected}
+			disabled={!anySelected}
 		>
 			Delete Item
 		</button>
-		<button
-			onClick={exportAction}
-		>
+		<button onClick={exportAction}>
 			Export CSV
 		</button>
 	</header>
@@ -29,7 +27,7 @@ Toolbar.propTypes = {
 	addAction: PropTypes.func,
 	delAction: PropTypes.func,
 	exportAction: PropTypes.func,
-	anythingSelected: PropTypes.bool,
+	anySelected: PropTypes.bool,
 };
 
 export default connect(

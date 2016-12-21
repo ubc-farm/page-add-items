@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import PouchMiddleware from 'pouch-redux-middleware';
 
 import selected from './selected.js';
@@ -41,8 +41,11 @@ export default function configureStore(db) {
 		},
 	});
 
+	const composeEnhancers =
+		(typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
+		|| compose;
 	return createStore(
 		mergedReducer,
-		applyMiddleware(pouchMiddleware),
+		composeEnhancers(applyMiddleware(pouchMiddleware)),
 	);
 }

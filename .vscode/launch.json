@@ -1,7 +1,4 @@
 {
-	// Use IntelliSense to find out which attributes exist for node debugging
-	// Use hover for the description of the existing attributes
-	// For further information visit https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
 		{
@@ -14,7 +11,8 @@
 			"sourceMaps": true,
 			"runtimeExecutable": "npm",
 			"windows": { "runtimeExecutable": "npm.cmd" },
-			"runtimeArgs": ["start"]
+			"runtimeArgs": ["start"],
+			"preLaunchTask": "prepare:server"
 		},
 		{
 			"name": "Attach to Process",

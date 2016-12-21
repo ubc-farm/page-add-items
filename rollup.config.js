@@ -13,6 +13,7 @@ export default {
 		nodeResolve({ browser: true, preferBuiltins: false }),
 		replace({
 			'process.env.NODE_ENV': JSON.stringify('production'),
+			'process.browser': JSON.stringify(true),
 		}),
 		commonjs({ namedExports: { docuri: ['route'] } }),
 	],

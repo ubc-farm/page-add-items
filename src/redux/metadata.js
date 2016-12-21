@@ -2,7 +2,7 @@ import { csvFormat } from 'd3-dsv';
 import { SAVE_NEW_ITEM, SAVE_NEW_EQUIPMENT } from './equipmentDB.js';
 
 const fields = [
-	'id',
+	'_id',
 	'class',
 	'product',
 	'description',
@@ -60,8 +60,8 @@ export const getDownloadData = state => state.metadata.download;
 export const isEditorOpen = state => state.metadata.editorOpen;
 
 // Actions
-export const download = filename => ({
-	type: PUSH_DOWNLOAD, meta: { filename },
+export const download = () => ({
+	type: PUSH_DOWNLOAD, meta: { filename: 'inventory.csv' },
 });
 export const clearDownload = () => ({ type: CLEAR_DOWNLOAD });
 export const openEditor = () => ({ type: OPEN_EDITOR });
