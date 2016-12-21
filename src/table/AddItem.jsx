@@ -1,10 +1,10 @@
 import { createElement, PropTypes } from 'react'; /** @jsx createElement */
 import reformed from 'react-reformed';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { classlist as cx } from '@ubc-farm/utils';
-import { addRow } from '../redux/table.js';
-import { stopAdding, isAdding } from '../redux/adding.js';
-import inputToRow from './inputToRow.js';
+import { saveNewEquipment } from '../redux/equipmentDB.js';
+import { isEditorOpen } from '../redux/metadata.js';
 
 const AddItem = ({ bindInput, model, onSubmit, className }) => (
 	<form
@@ -84,7 +84,7 @@ AddItem.propTypes = {
 
 export default connect(
 	state => ({
-		className: isAdding(state) ? 'inventory-AddItem--open' : null,
+		className: isEditorOpen(state) ? 'inventory-AddItem--open' : null,
 		initialModel: {
 			class: 'Variable',
 			product: '',
@@ -101,10 +101,7 @@ export default connect(
 			sku: '',
 		},
 	}),
-	dispatch => ({
-		onSubmit(model) {
-			dispatch(addRow(inputToRow(model)));
-			dispatch(stopAdding());
-		},
-	}),
+	dispatch => bindActionCreators({
+		onSubmit: saveNewEquipment,
+	}, dispatch),
 )(reformed()(AddItem));

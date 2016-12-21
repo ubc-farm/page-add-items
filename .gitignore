@@ -1,5 +1,6 @@
 node_modules
-server/out.js
-server/out.js.map
-server/public/index.js
-server/public/index.js.map
+public/index.js
+public/index.js.map
+api.js
+api.js.map
+equipment

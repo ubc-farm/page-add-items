@@ -1,23 +1,10 @@
-import { csvFormat } from 'd3-dsv';
+import { observeStore } from '@ubc-farm/utils';
+import { getDownloadData, clearDownload } from '../redux/metadata.js';
 
-const fields = [
-	'id',
-	'class',
-	'product',
-	'description',
-	'quantity',
-	'unit',
-	'valuePerUnit',
-	'entryDate',
-	'lifeSpan',
-	'location',
-	'salvageValue',
-	'barcode',
-	'supplier',
-	'sku',
-];
-
-export function download(filename, text) {
+/**
+ * Downloads some text file to the user's computer
+ */
+function download(filename, text) {
 	const element = document.createElement('a');
 	element.setAttribute('href',
 		`data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);
@@ -29,10 +16,14 @@ export function download(filename, text) {
 	document.body.removeChild(element);
 }
 
-export function createCSV(tableData) {
-	return csvFormat(tableData, fields);
-}
+export default function watchForDownloads(store) {
+	if (typeof document === 'undefined') {
+		throw new Error('Cannot be used in Node.js or a worker, requires DOM');
+	}
 
-export default function exportCSV(tableData) {
-	download('inventory.csv', createCSV(tableData));
+	return observeStore(store, getDownloadData, (data) => {
+		if (data === null) return;
+		download(data.filename, data.csv);
+		store.dispatch(clearDownload());
+	});
 }

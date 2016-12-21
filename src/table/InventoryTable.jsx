@@ -1,11 +1,11 @@
-import { createElement, PropTypes } from 'react';
+import { createElement, PropTypes } from 'react'; /** @jsx createElement */
 import Table, { Column } from '@ubc-farm/table-base';
 import { centsToString } from '@ubc-farm/money';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { getTable } from '../redux/table.js';
-import { getSelected, toggle } from '../redux/selected.js';
-/** @jsx createElement */
+import { bindActionCreators } from 'redux';
+import { getDatabase } from '../redux/equipmentDB';
+import { getSelected, setSelected } from '../redux/selected.js';
 
 function nullToNA(str) { return str === null ? 'N/A' : str; }
 
@@ -15,7 +15,7 @@ const InventoryTable = props => (
 		rowClassName={row => (props.selected === row.id ? 'row--selected' : null)}
 	>
 		<Column
-			field="id" isKey
+			field="_id" isKey
 			format={id => (
 				<input
 					type="radio"
@@ -57,16 +57,14 @@ const InventoryTable = props => (
 );
 
 InventoryTable.propTypes = {
-	selected: PropTypes.instanceOf(Set).isRequired,
+	selected: PropTypes.string,
 	onChange: PropTypes.func.isRequired,
 };
 
 export default connect(
 	state => ({
-		tableData: getTable(state),
+		tableData: getDatabase(state),
 		selected: getSelected(state),
 	}),
-	dispatch => ({
-		onChange: id => dispatch(toggle(id)),
-	}),
+	dispatch => bindActionCreators({ onChange: setSelected }, dispatch),
 )(InventoryTable);
