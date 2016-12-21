@@ -8,7 +8,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 export default {
 	sourceMap: true,
 	entry: 'src/api/index.js',
-	dest: require('./package.json').main,
+	dest: require('./package.json')['ubc-farm']['server-plugin'],
 	format: 'cjs',
 	plugins: [
 		json(),

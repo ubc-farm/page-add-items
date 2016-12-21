@@ -13,7 +13,7 @@ const id = Joi.string().regex(/^item\/[^\/]+\/\w+$/, 'Item docURI ID');
 export default Joi.object({
 	_id: id,
 	class: Joi.any().only('Variable', 'Fixed'),
-	product: Joi.string(),
+	product: Joi.string().lowercase().regex(/^[a-z_0-9]$/, 'snake_case'),
 	description: Joi.string(),
 	unit: Joi.string().only('kg', 'each'),
 	lifeSpan: duration,

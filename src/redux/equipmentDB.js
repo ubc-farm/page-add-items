@@ -49,7 +49,7 @@ export default function equipmentDB(state = [], action = {}, selectedId = '') {
 			const id = action.meta.id || action.payload._id;
 			const changes = action.payload;
 			return state.map(equip => (
-				equip.id === id
+				equip._id === id
 					? Object.assign({}, equip, changes)
 					: equip
 			));
