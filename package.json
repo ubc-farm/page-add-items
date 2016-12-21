@@ -50,7 +50,7 @@
   "scripts": {
     "prepare:client": "rollup -c",
     "prepare:server": "rollup -c rollup.config.server.js",
-    "start": "ubc-farm-server ./package.json --stack",
+    "start": "ubc-farm-server ./package.json",
     "lint": "eslint src/**"
   },
   "files": [

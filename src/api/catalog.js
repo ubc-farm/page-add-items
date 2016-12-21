@@ -11,29 +11,34 @@ const columns = [
 ];
 
 const response = {
-	payload: Joi.array().single().items(Item),
+	schema: Joi.array().single().items(Item),
 };
 
 export const getCatalog = {
 	method: 'GET',
-	path: '/catalog/{name?}',
+	path: '/catalog',
 	handler({ params: { name } }, reply) {
-		let query;
-		if (name) {
-			const prefix = itemAsset({ product: snakeCase(name) });
-			query = db.find({
-				selector: {
-					$gte: prefix,
-					$le: `${prefix}\uffff`,
-				},
-				fields: columns,
-				limit: 1,
-			});
-		} else {
-			query = Promise.resolve(); // TODO
-		}
+		const query = Promise.reject(); // TODO
 
 		return reply(query).type('application/json');
+	},
+	config: { response },
+};
+
+export const getCatalogItem = {
+	method: 'GET',
+	path: '/catalog/{name}',
+	handler({ params: { name } }, reply) {
+		const prefix = itemAsset({ product: snakeCase(name) });
+
+		return reply(db.find({
+			selector: {
+				$gte: prefix,
+				$le: `${prefix}\uffff`,
+			},
+			fields: columns,
+			limit: 1,
+		})).type('application/json');
 	},
 	config: { response },
 };
