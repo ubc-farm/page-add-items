@@ -3,7 +3,7 @@ import { schema, boolean } from 'benthos';
 import knex from '../src/connection.js';
 
 const CatalogItem = schema({
-	id: '{{uuid}}',
+	_id: 'item/{{words}}/{{uuid}}',
 	class: () => (boolean() ? 'Variable' : 'Fixed'),
 	product: '{{words}}',
 	description: '{{words}}',
