@@ -1,7 +1,0 @@
-{
-	"presets": ["@ubc-farm/babel-preset"],
-  "ignore": [
-    "node_modules/**",
-		"dist/**"
-  ]
-}

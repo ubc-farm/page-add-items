@@ -7,10 +7,12 @@
   "repository": "https://github.com/ubc-farm/page-add-items",
   "browser": "public/index.js",
   "main": "api.js",
+  "module": "src/index.jsx",
   "ubc-farm": {
     "server-plugin": "api.js"
   },
   "dependencies": {
+    "@ubc-farm/eslint-config": "^4.2.0",
     "@ubc-farm/money": "^3.0.0",
     "@ubc-farm/table-base": "^2.2.0",
     "@ubc-farm/utils": "^4.1.0",
@@ -60,5 +62,14 @@
   ],
   "config": {
     "port": 3001
+  },
+  "eslintConfig": {
+    "extends": "@ubc-farm/eslint-config/react.yaml",
+    "rules": {
+      "no-param-reassign": "off"
+    }
+  },
+  "babel": {
+    "presets": ["@ubc-farm/babel-preset"]
   }
 }

@@ -3,10 +3,12 @@ import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 
+/* eslint-disable global-require,import/no-commonjs */
+
 export default {
 	sourceMap: true,
 	entry: 'src/index.jsx',
-	dest: 'public/index.js',
+	dest: require('./package.json').browser,
 	format: 'iife',
 	plugins: [
 		babel({ exclude: 'node_modules/**' }),

@@ -3,10 +3,12 @@ import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 
+/* eslint-disable global-require,import/no-commonjs */
+
 export default {
 	sourceMap: true,
 	entry: 'src/api/index.js',
-	dest: 'api.js',
+	dest: require('./package.json').main,
 	format: 'cjs',
 	plugins: [
 		json(),
