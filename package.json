@@ -11,27 +11,13 @@
     "server-plugin": "api.js"
   },
   "dependencies": {
-    "@ubc-farm/eslint-config": "^4.2.0",
-    "@ubc-farm/money": "^3.0.0",
-    "@ubc-farm/table-base": "^2.2.0",
-    "@ubc-farm/utils": "^4.1.0",
-    "d3-dsv": "^1.0.3",
-    "document-promises": "^2.0.0",
-    "docuri": "^4.2.1",
-    "es7-object-polyfill": "0.0.3",
-    "events": "^1.1.1",
-    "joi": "^9.2.0",
-    "lodash-es": "^4.17.2",
-    "moment": "^2.16.0",
-    "pouch-redux-middleware": "^0.5.0",
     "pouchdb": "^6.1.0",
     "pouchdb-find": "^0.10.4",
-    "process": "^0.11.9",
-    "react": "15.3.0",
-    "react-dom": "15.3.0",
-    "react-redux": "^4.4.6",
-    "react-reformed": "^0.4.2",
-    "redux": "^3.6.0"
+    "joi": "^9.2.0"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   },
   "devDependencies": {
     "@ubc-farm/babel-preset": "^1.0.0",
@@ -47,7 +33,25 @@
     "rollup-plugin-json": "^2.0.2",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
-    "rollup-watch": "^2.5.0"
+    "rollup-watch": "^2.5.0",
+
+    "@ubc-farm/money": "^3.0.0",
+    "@ubc-farm/table-base": "^2.2.0",
+    "@ubc-farm/utils": "^4.1.0",
+    "d3-dsv": "^1.0.3",
+    "document-promises": "^2.0.0",
+    "docuri": "^4.2.1",
+    "es7-object-polyfill": "0.0.3",
+    "events": "^1.1.1",
+    "lodash-es": "^4.17.2",
+    "moment": "^2.16.0",
+    "pouch-redux-middleware": "^0.5.0",
+    "process": "^0.11.9",
+    "react": "15.3.0",
+    "react-dom": "15.3.0",
+    "react-redux": "^4.4.6",
+    "react-reformed": "^0.4.2",
+    "redux": "^3.6.0"
   },
   "scripts": {
     "prepare:client": "rollup -c",
