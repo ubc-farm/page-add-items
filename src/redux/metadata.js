@@ -1,4 +1,5 @@
 import { csvFormat } from 'd3-dsv';
+import { SAVE_NEW_ITEM, SAVE_NEW_EQUIPMENT } from './equipmentDB.js';
 
 const fields = [
 	'id',
@@ -43,7 +44,10 @@ export default function selectedReducer(state = defaultState, action, equipmentD
 
 		case OPEN_EDITOR:
 			return Object.assign({}, state, { editorOpen: true });
+
 		case CLOSE_EDITOR:
+		case SAVE_NEW_ITEM:
+		case SAVE_NEW_EQUIPMENT:
 			return Object.assign({}, state, { editorOpen: false });
 
 		default: return state;

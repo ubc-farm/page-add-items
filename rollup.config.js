@@ -6,20 +6,26 @@ import replace from 'rollup-plugin-replace';
 export default {
 	sourceMap: true,
 	entry: 'src/index.jsx',
-	dest: 'server/public/index.js',
+	dest: 'public/index.js',
 	format: 'iife',
 	plugins: [
 		babel({ exclude: 'node_modules/**' }),
-		nodeResolve(),
+		nodeResolve({ browser: true, preferBuiltins: false }),
 		replace({
 			'process.env.NODE_ENV': JSON.stringify('production'),
 		}),
-		commonjs(),
+		commonjs({ namedExports: { docuri: ['route'] } }),
 	],
-	external: ['react', 'react-dom', 'tape'],
+	external: [
+		'react', 'react-dom', 'tape',
+	],
 	globals: {
 		react: 'React',
 		'react-dom': 'ReactDOM',
 		tape: 'test',
+	},
+	paths: {
+		pouchdb: './node_modules/pouchdb/dist/pouchdb.min.js',
+		lodash: 'lodash-es',
 	},
 };

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { snakeCase } from 'lodash';
+import { snakeCase } from 'lodash-es';
 import { id } from '@ubc-farm/utils';
 import { floatToCents } from '@ubc-farm/money';
 import itemAsset from './itemURI.js';

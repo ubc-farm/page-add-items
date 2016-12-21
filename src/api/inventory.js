@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
-import Equipment from '../../../src/schema/Equipment.js';
-import { transformInputToRow } from '../../../src/redux/equipmentDB.js';
-import db from '../../../src/pouchdb.js';
+import Equipment from '../schema/Equipment.js';
+import transformInputToRow from '../schema/transform.js';
+import db from '../pouchdb.js';
 
 const payload = Joi.array().single().items(Equipment);
 

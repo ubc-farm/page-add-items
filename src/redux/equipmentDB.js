@@ -1,9 +1,9 @@
-import { snakeCase } from 'lodash';
+import { snakeCase } from 'lodash-es';
 import transformInputToRow, { clearEquipmentOnlyKeys } from '../schema/transform.js';
 
 export const INSERT_EQUIPMENT = 'inventory/equipmentDB/INSERT_ITEM';
-const SAVE_NEW_ITEM = 'inventory/equipmentDB/SAVE_NEW_ITEM';
-const SAVE_NEW_EQUIPMENT = 'inventory/equipmentDB/SAVE_NEW_EQUIPMENT';
+export const SAVE_NEW_ITEM = 'inventory/equipmentDB/SAVE_NEW_ITEM';
+export const SAVE_NEW_EQUIPMENT = 'inventory/equipmentDB/SAVE_NEW_EQUIPMENT';
 const EDIT_ITEM = 'inventory/equipmentDB/EDIT_ITEM';
 const EDIT_EQUIPMENT = 'inventory/equipmentDB/EDIT_EQUIPMENT';
 const DELETE_ITEM = 'inventory/equipmentDB/DELETE_ITEM';

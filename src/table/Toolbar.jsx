@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { deleteSelectedEquipment } from '../redux/equipmentDB.js';
 import { anythingSelected } from '../redux/selected.js';
-import { startAdding } from '../redux/adding.js';
+import { openEditor, download } from '../redux/metadata.js';
 import exportCSV from './exportCSV.js';
 
 const Toolbar = ({ addAction, delAction, exportAction, anythingSelected }) => (
@@ -32,17 +32,13 @@ Toolbar.propTypes = {
 	anythingSelected: PropTypes.bool,
 };
 
-function exportAction() {
-	return (dispatch, getState) => exportCSV(getTable(getState()));
-}
-
 export default connect(
 	state => ({
 		anySelected: anythingSelected(state),
 	}),
 	dispatch => bindActionCreators({
-		addAction: startAdding,
+		addAction: openEditor,
 		delAction: deleteSelectedEquipment,
-		exportAction: exportAction,
+		exportAction: download,
 	}, dispatch),
 )(Toolbar);

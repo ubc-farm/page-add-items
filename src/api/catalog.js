@@ -1,8 +1,8 @@
 import * as Joi from 'joi';
-import { snakeCase } from 'lodash';
-import Item from '../../../src/schema/Item.js';
-import itemAsset from '../../../src/schema/itemURI.js';
-import db from '../../../src/pouchdb.js';
+import { snakeCase } from 'lodash-es';
+import Item from '../schema/Item.js';
+import itemAsset from '../schema/itemURI.js';
+import db from '../pouchdb.js';
 
 const columns = [
 	'class', 'product',
