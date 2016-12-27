@@ -17,10 +17,24 @@ const response = {
 export const getCatalog = {
 	method: 'GET',
 	path: '/catalog',
-	handler({ params: { name } }, reply) {
-		const query = Promise.reject(); // TODO
+	async handler({ params: { name } }, reply) {
+		const products = new Set();
+		const results = [];
+		try {
+			const { rows } = await db.allDocs();
 
-		return reply(query).type('application/json');
+			rows.forEach((row) => {
+				const { product } = itemAsset(row._id);
+				if (!products.has(product)) {
+					results.push(row);
+					products.add(product);
+				}
+			});
+
+			return reply(results).type('application/json');
+		} catch (err) {
+			return reply(err);
+		}
 	},
 	config: { response },
 };
