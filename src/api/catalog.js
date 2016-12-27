@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { snakeCase } from 'lodash-es';
+import { snakeCase, pick } from 'lodash-es';
 import Item from '../schema/Item.js';
 import itemAsset from '../schema/itemURI.js';
 import db from '../pouchdb.js';
@@ -28,17 +28,24 @@ export const getCatalog = {
 export const getCatalogItem = {
 	method: 'GET',
 	path: '/catalog/{name}',
-	handler({ params: { name } }, reply) {
+	async handler({ params: { name } }, reply) {
 		const prefix = itemAsset({ product: snakeCase(name) });
 
-		return reply(db.find({
-			selector: {
-				$gte: prefix,
-				$le: `${prefix}\uffff`,
-			},
-			fields: columns,
-			limit: 1,
-		})).type('application/json');
+		try {
+			const { rows } = await db.allDocs({
+				include_docs: true,
+				startkey: prefix,
+				endkey: `${prefix}\uffff`,
+				limit: 1,
+			});
+
+			if (rows.length === 0) return reply().code(404);
+
+			const slice = pick(rows[0], columns);
+			return reply(slice).type('application/json');
+		} catch (err) {
+			return reply(err);
+		}
 	},
 	config: { response },
 };
