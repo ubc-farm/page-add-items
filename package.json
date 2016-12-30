@@ -11,9 +11,10 @@
     "server-plugin": "api.js"
   },
   "dependencies": {
+    "joi": "^9.2.0",
     "pouchdb": "^6.1.0",
     "pouchdb-find": "^0.10.4",
-    "joi": "^9.2.0"
+    "redux-devtools-extension": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.0",
@@ -34,7 +35,6 @@
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
     "rollup-watch": "^2.5.0",
-
     "@ubc-farm/money": "^3.0.0",
     "@ubc-farm/table-base": "^2.2.0",
     "@ubc-farm/utils": "^4.1.0",
@@ -74,6 +74,8 @@
     }
   },
   "babel": {
-    "presets": ["@ubc-farm/babel-preset"]
+    "presets": [
+      "@ubc-farm/babel-preset"
+    ]
   }
 }
