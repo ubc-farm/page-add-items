@@ -14,11 +14,9 @@ export default Joi.object({
 	_id: id,
 	class: Joi.any().only('Variable', 'Fixed'),
 	product: Joi.string().lowercase().regex(/^[a-z_0-9]$/, 'snake_case'),
-	description: Joi.string(),
 	unit: Joi.string().only('kg', 'each'),
 	lifeSpan: duration,
 	salvageValue: Joi.number().integer().allow(null),
 	barcode: Joi.string(),
-	supplier: Joi.string().allow(null),
 	sku: Joi.string().allow(null),
 });

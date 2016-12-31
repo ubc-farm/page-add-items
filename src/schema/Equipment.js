@@ -6,8 +6,10 @@ import Item from './Item.js';
  * such as quantity and location.
  */
 export default Item.keys({
+	description: Joi.string(),
 	quantity: Joi.number(),
 	unit: Joi.string().only('kg', 'each'),
 	entryDate: Joi.date(),
 	location: Joi.string(),
+	supplier: Joi.string().allow(null),
 });
