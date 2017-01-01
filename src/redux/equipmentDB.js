@@ -78,6 +78,8 @@ export const getDatabase = store => store.equipmentDB;
 export const getColumn = (store, columnName) =>
 	getDatabase(store).map(row => row[columnName]);
 
+export const getItems = store =>
+	getDatabase(store).reduce((set, { product }) => set.add(product), new Set());
 export const getItemInstances = (store, product) =>
 	getDatabase(store).filter(equip => equip.product === product);
 
